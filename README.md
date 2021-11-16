@@ -70,9 +70,9 @@ pip install -r requirements.txt
 ## 🟡 엔드포인트 설명
 |METHOD| ENDPOINT| body | 수행목적 |
 |------|---|---|----|
-| POST	| /batch	| 	| batch 생성 |
-| GET | /search  |  | 검색 |
-| POST | /list  |  | 임상정보 리스트 |
+| POST	| /clinical/batch	| 	| batch 생성 |
+| GET | /clinical/search  |  | 검색 |
+| POST | /clinical/list  |  | 임상정보 리스트 |
 
 
 
