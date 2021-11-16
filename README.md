@@ -27,12 +27,11 @@ pip install -r requirements.txt
 <br>
 
 ## 🟡 기본 설계
-![image](https://user-images.githubusercontent.com/81546305/141465168-efdb4b70-05ed-42a2-8bec-d525d2451037.png)
+<img width="866" alt="스크린샷 2021-11-16 오후 11 11 51" src="https://user-images.githubusercontent.com/81546305/142001113-adb11c1e-1e34-4e51-8e24-21c81e45b46f.png">
 
 
-- User, Account, Transaction 총 세개의 테이블로 구성하였습니다.
-- User는 기본적인 가입, 로그인/회원가입, 데코레이터를 구현했고, Account는 User와 연결된 계좌의 잔고와 기본적인 입금/출금 기능을 구행하는 테이블입니다.
-- Transaction은 거래내역을 담은 테이블로 거래 시간, 잔고, 적요, 등을 담았습니다.
+
+- clinic data 단일 테이블로 구성하였습니다. 임상정보 포함 항목들을 모델에 반영하였습니다.
 
 
 ## 🟡 구현 내용
