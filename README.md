@@ -66,9 +66,9 @@ pip install -r requirements.txt
 
 
 ## 🟡 엔드포인트 설명
-|METHOD| ENDPOINT| body | 수행목적 |
+|METHOD| ENDPOINT| QueryParams | 수행목적 |
 |------|---|---|----|
-| POST	| /clinical/batch	|공공데이터 포털로부터 데이터를 수집하는 api입니다. 1시간마다 주기적으로 백그라운드상에서 호출이 됩니다.  	| batch 생성 |
+| POST	| /clinical/batch	|| batch 생성 |
 | GET | /clinical/search  | ?taskCode=C140006  | 검색 |
 | POST | /clinical/list  | ?offset=0&limit=2 | 임상정보 리스트 |
 
