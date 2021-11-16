@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from model_utils import FieldTracker
+
 
 # Create your models here.
 class ClinicalData(models.Model):
@@ -16,4 +16,4 @@ class ClinicalData(models.Model):
     created_at = models.DateField(auto_now_add=True,null=True)
     updated_at = models.DateField(auto_now_add=False,null=True)
 
-    tracker = FieldTracker()
+    
