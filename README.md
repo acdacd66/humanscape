@@ -24,12 +24,14 @@ pip install -r requirements.txt
 
 - secret.json 파일을 통해 secret key와 api key를 분리하여 기입하였습니다.
 <img width="470" alt="스크린샷 2021-11-17 오전 12 04 26" src="https://user-images.githubusercontent.com/81546305/142010149-8bcaf47d-44eb-409c-acee-863677aee5df.png">
-- manage.py와 같은 경로에서 secret.json 파일을 생성해주었습니다. 
+- manage.py와 같은 경로에서 secret.json 파일을 생성해주었습니다.
+<img width="470" alt="스크린샷 1 2021-11-17 오전 12 04 26" src="https://user-images.githubusercontent.com/39540606/142033855-8440379c-a29a-472f-8e3b-3bde11f826d8.png"> 
 <br>
 - python manage.py runserver를 통해 서버를 실행한다.
 <br>
 - [POSTMAN API 문서](https://documenter.getpostman.com/view/16843875/UVCB94M1) 를 통해 확인 가능합니다.
 <br>
+
 
 ## 🟡 기본 설계
 <img width="866" alt="스크린샷 2021-11-16 오후 11 11 51" src="https://user-images.githubusercontent.com/81546305/142001113-adb11c1e-1e34-4e51-8e24-21c81e45b46f.png">
