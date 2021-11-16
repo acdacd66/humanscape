@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render
 import requests
 from rest_framework.views import APIView
@@ -25,38 +26,51 @@ def get_clinical_data():
     except:
       return None
 
+def compare_old_and_new(old,new,obj,updated_flag):
+    if updated_flag == True:
+        if old == new:
+            return new
+        else:
+            obj.updated_at = datetime.datetime.today()
+            return new
+    else:
+        return new
+
 def save_clinical_data(clinical_data):
+    update_flag = False
     datas = clinical_data['data']
     for d in datas:
         clinicalData = None
         if ClinicalData.objects.filter(taskCode = d["과제번호"]).exists():
             clinicalData = ClinicalData.objects.get(taskCode = d["과제번호"])
+            update_flag = True
        
         else:
             clinicalData = ClinicalData()
-      
-        clinicalData.taskCode = d["과제번호"]
         
-        clinicalData.taskName = d["과제명"]
-        clinicalData.department = d["진료과"]
-        clinicalData.chiefInstitution = d["연구책임기관"]
+        
+        clinicalData.taskCode = compare_old_and_new(clinicalData.taskCode ,d["과제번호"],update_flag,clinicalData)
+        
+        clinicalData.taskName = compare_old_and_new(clinicalData.taskName, d["과제명"],update_flag,clinicalData)
+        clinicalData.department = compare_old_and_new( clinicalData.department,d["진료과"],update_flag,clinicalData)
+        clinicalData.chiefInstitution = compare_old_and_new( clinicalData.chiefInstitution,d["연구책임기관"],update_flag,clinicalData)
         if d["전체목표연구대상자수"] != "":
-             clinicalData.studySubjectNumbers = int(d["전체목표연구대상자수"])
+             clinicalData.studySubjectNumbers = compare_old_and_new(clinicalData.studySubjectNumbers, int(d["전체목표연구대상자수"]), update_flag,clinicalData)
 
         
         if d["연구기간"][-2:] == "개월":
-            clinicalData.studyPeriod = int(d["연구기간"][:-2])
+            clinicalData.studyPeriod = compare_old_and_new(clinicalData.studyPeriod,int(d["연구기간"][:-2]),update_flag,clinicalData)
         try:
             if d["연구기간"][-1:] == "년":
-                clinicalData.studyPeriod = int(d["연구기간"][:-1]) * 12
+                clinicalData.studyPeriod = compare_old_and_new(clinicalData.studyPeriod,int(d["연구기간"][:-1]) * 12,update_flag,clinicalData)
         except:
             pass
-        clinicalData.studyType = d["연구종류"]
-        clinicalData.studyPhase = d["임상시험단계(연구모형)"]
-        clinicalData.studyScope = d["연구범위"]
+        clinicalData.studyType = compare_old_and_new(clinicalData.studyType, d["연구종류"],update_flag,clinicalData)
+        clinicalData.studyPhase = compare_old_and_new(clinicalData.studyPhase , d["임상시험단계(연구모형)"],update_flag,clinicalData)
+        clinicalData.studyScope = compare_old_and_new( clinicalData.studyScope, d["연구범위"],update_flag,clinicalData)
 
-        if len(clinicalData.tracker.changed()) >  0:
-            clinicalData.updated_at = datetime.datetime.today()
+        # if len(clinicalData.tracker.changed()) >  0:
+        #     clinicalData.updated_at = datetime.datetime.today()
 
         clinicalData.save()
        
@@ -95,9 +109,11 @@ class ClinicalDataSearchView(APIView):
 class ClinicalDataListView(APIView,LimitOffsetPagination):
     
     def get(self, request):
-        updated_datas = ClinicalData.objects.annotate(
-        diff=ExpressionWrapper(F('updated_at') - F('created_at'), output_field=DurationField())
-        ).filter(diff__lte=datetime.timedelta(7))
+        today = datetime.datetime.today()
+        last_delta = datetime.timedelta(7)
+        last_week_date = today- last_delta
+    
+        updated_datas = ClinicalData.objects.filter(updated_at__range = [last_week_date, today])
         
         page = self.paginate_queryset(updated_datas,request, view=self)
         
