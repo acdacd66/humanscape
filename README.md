@@ -21,14 +21,18 @@
 ## 🟡 빌드 및 실행 방법
 - repo 폴더안의 requirements.text 파일을 install 한다.
 pip install -r requirements.txt
+
+- secret.json 파일을 통해 secret key와 api key를 분리하여 기입하였습니다.
+<img width="470" alt="스크린샷 2021-11-17 오전 12 04 26" src="https://user-images.githubusercontent.com/81546305/142010149-8bcaf47d-44eb-409c-acee-863677aee5df.png">
+- manage.py와 같은 경로에서 secret.json 파일을 생성해주었습니다. 
+<br>
 - python manage.py runserver를 통해 서버를 실행한다.
 <br>
-- [POSTMAN API 문서](https://documenter.getpostman.com/view/16843875/UVC8CR6j) 를 통해 확인 가능합니다.
+- [POSTMAN API 문서](https://documenter.getpostman.com/view/16843875/UVCB94M1) 를 통해 확인 가능합니다.
 <br>
 
 ## 🟡 기본 설계
 <img width="866" alt="스크린샷 2021-11-16 오후 11 11 51" src="https://user-images.githubusercontent.com/81546305/142001113-adb11c1e-1e34-4e51-8e24-21c81e45b46f.png">
-
 
 
 - clinic data 단일 테이블로 구성하였습니다. 임상정보 포함 항목들을 모델에 반영하였습니다.
@@ -42,22 +46,15 @@ pip install -r requirements.txt
 ## 🟡 구현 기능/구현 방법
 🔵  BATCH API
  
-- 검색 시작 날짜(`start_date`), 검색 종료 날짜(`end_date`), 입/출금 타입(`type`) 및 pagination data(`offset`, `limit`)을 쿼리 스트링으로 전달받습니다.
-- 각각의 쿼리스트링이 전달되지 않으 경우, 기존에 지정해두 default value를 통해 filtering하게 됩니다.
-- filtering method로는 q객체를 사용하였습니다.
-- 인증되지 않은 유저(다른 유저)의 접근을 제한하기 위해 토큰을 이용하여 사용자르 식별합니다.
-- Key Error, Value Error(잘못된 type 형식 등), Validation Error(잘못된 날짜 형식 등)에 대한 예외처리를 주었습니다.
+ - BATCH POST API를 통해 기존의 임상정보 데이터를 불러와 저장합니다.
 
 🔵 임상정보 리스트 API
 
-- json을 통해 입금할 금액, account_id, 적요를 받아온 후, account_id가 존재하는지 확인합니다. id가 없다면 계좌 없음 에러를 반환합니다.
-- 그 후 계좌 잔액과 입금 금액을 더해 전체 금액을 저장해주고, account_id와 account_balance, brief를 결과값으로 받아옵니다.
+- 임상정보 리스트를 불러옵니다. limit,offset을 통해 Pagination을 하였습니다.
 
 🔵 임상정보 검색 API
 
-- json을 통해 출금할 금액, account_id, 적요를 받아온 후, account_id가 존재하는지 확인합니다. id가 없다면 계좌 없음 에러를 반환합니다.
-- 그 후 계좌 잔액과 출금 금액을 빼 전체 금액을 저장해주고, 뺀 금액이 0보다 큰지 확인합니다. 0보다 작다면 잔고 부족으로 에러를 반환합니다.
-- account_id와 account_balance, brief를 결과값으로 받아옵니다.
+- 임상정보를 검색하는 API입니다. taskCode를 통해 검색할 수 있습니다.
 
 
 
@@ -70,8 +67,8 @@ pip install -r requirements.txt
 |METHOD| ENDPOINT| body | 수행목적 |
 |------|---|---|----|
 | POST	| /clinical/batch	| 	| batch 생성 |
-| GET | /clinical/search  |  | 검색 |
-| POST | /clinical/list  |  | 임상정보 리스트 |
+| GET | /clinical/search  | ?taskCode=C140006  | 검색 |
+| POST | /clinical/list  | ?offset=0&limit=2 | 임상정보 리스트 |
 
 
 
