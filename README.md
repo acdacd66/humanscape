@@ -46,15 +46,15 @@ pip install -r requirements.txt
 ## 🟡 구현 기능/구현 방법
 🔵  BATCH API
  
- - BATCH POST API를 통해 기존의 임상정보 데이터를 불러와 저장합니다.
+ - 공공데이터 포털로부터 데이터를 수집하는 api입니다. 1시간마다 주기적으로 백그라운드상에서 api가 호출이 되서 데이터베이스를 업데이트합니다.. 
 
 🔵 임상정보 리스트 API
 
-- 임상정보 리스트를 불러옵니다. limit,offset을 통해 Pagination을 하였습니다.
+- 임상정보 리스트를 불러옵니다. limit,offset을 통해 Pagination을 하였습니다. (오늘 - 7) ~ 오늘 범위에서 update 이력이 있는 임상 정보 데이터들을 불러옵니다. 즉 최근 일주일 이내의 update 이력이 있는 임상 정보들을 추출합니다.
 
 🔵 임상정보 검색 API
 
-- 임상정보를 검색하는 API입니다. taskCode를 통해 검색할 수 있습니다.
+- 임상정보를 검색하는 API입니다. taskCode(과제 번호)를 통해 검색할 수 있습니다.
 
 
 
@@ -66,7 +66,7 @@ pip install -r requirements.txt
 ## 🟡 엔드포인트 설명
 |METHOD| ENDPOINT| body | 수행목적 |
 |------|---|---|----|
-| POST	| /clinical/batch	| 	| batch 생성 |
+| POST	| /clinical/batch	|공공데이터 포털로부터 데이터를 수집하는 api입니다. 1시간마다 주기적으로 백그라운드상에서 호출이 됩니다.  	| batch 생성 |
 | GET | /clinical/search  | ?taskCode=C140006  | 검색 |
 | POST | /clinical/list  | ?offset=0&limit=2 | 임상정보 리스트 |
 
